@@ -1,4 +1,5 @@
 
+import 'package:first_project/screens/favorite_screen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -40,10 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
       'Index 0: Accueil',
       style: optionStyle,
     ),
-    Text(
-      'Index 1: Favoris',
-      style: optionStyle,
-    ),
+    FavoriteScreen(),
+    
     Text(
       'Index 2: Shop',
       style: optionStyle,
