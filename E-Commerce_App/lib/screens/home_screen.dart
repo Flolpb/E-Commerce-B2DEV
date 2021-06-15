@@ -1,5 +1,6 @@
 
 import 'package:first_project/main.dart';
+import 'package:first_project/screens/accueil_screen.dart';
 import 'package:first_project/screens/favorite_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -30,11 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Accueil',
-      style: optionStyle,
-    ),
+  static List<Widget> _widgetOptions = <Widget>[
+    ArticleInformation(),
     FavoriteScreen(),
     Text(
       'Index 2: Shop',
@@ -46,10 +44,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context){
     return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.white,
+      ),
       title: "E-Commerce",
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("E-Commerce B2DEV")
+          title: Row(children: [
+            Text("E-Commerce B2DEV"),
+            Spacer(),
+            IconButton(onPressed: () => print("test"), icon: const Icon(Icons.search)),
+            IconButton(onPressed: () => print("test"), icon: const Icon(Icons.shopping_basket)),
+          ],
+          
+          
+          )
           )
         ,
         body: Center(
