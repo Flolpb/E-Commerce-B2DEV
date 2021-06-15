@@ -11,8 +11,8 @@ class FavoriteScreen extends StatefulWidget{
 class _FavoriteScreenState extends State<FavoriteScreen>{
   @override 
   Widget build(BuildContext context){
-    return Scaffold(
-      body: Center(
+    return Container(
+      child: Center(
         child: Text("Page favoris")
       ),
     );

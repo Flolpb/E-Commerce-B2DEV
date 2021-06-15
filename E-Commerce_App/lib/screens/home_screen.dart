@@ -1,4 +1,5 @@
 
+import 'package:first_project/main.dart';
 import 'package:first_project/screens/favorite_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +15,6 @@ class HomeScreen extends StatefulWidget{
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  @override
-  void initState(){
-    super.initState();
-    setState(() {
-      _selectedIndex = 0;
-    });
-  }
 
   @override
   void dispose(){
@@ -42,15 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
       style: optionStyle,
     ),
     FavoriteScreen(),
-    
     Text(
       'Index 2: Shop',
       style: optionStyle,
     ),
-    Text(
-      'Index 3: Compte',
-      style: optionStyle,
-    ),
+    Authenticate()
   ];
 
   @override
