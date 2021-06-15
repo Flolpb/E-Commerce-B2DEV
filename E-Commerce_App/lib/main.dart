@@ -34,7 +34,9 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter++;
     });
-  } void _decrementCounter() {
+  }
+
+  void _decrementCounter() {
     setState(() {
       _counter--;
     });
