@@ -1,4 +1,5 @@
 import 'package:first_project/screens/favorite_screen.dart';
+import 'package:first_project/screens/shop.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,16 +34,13 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: Accueil',
       style: optionStyle,
     ),
     FavoriteScreen(),
-    Text(
-      'Index 2: Shop',
-      style: optionStyle,
-    ),
+    ShopState(),
     Text(
       'Index 3: Compte',
       style: optionStyle,
