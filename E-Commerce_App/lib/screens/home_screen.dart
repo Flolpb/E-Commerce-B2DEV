@@ -1,6 +1,7 @@
 
 import 'package:first_project/main.dart';
 import 'package:first_project/screens/accueil_screen.dart';
+import 'package:first_project/screens/basket_screen.dart';
 import 'package:first_project/screens/favorite_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -38,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'Index 2: Shop',
       style: optionStyle,
     ),
+    BasketScreen(),
     Authenticate()
   ];
 
@@ -54,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
             Text("E-Commerce B2DEV"),
             Spacer(),
             IconButton(onPressed: () => print("test"), icon: const Icon(Icons.search)),
-            IconButton(onPressed: () => print("test"), icon: const Icon(Icons.shopping_basket)),
           ],
           
           
@@ -77,6 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.shop),
               label: 'Shop',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_basket),
+              label: 'Panier',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),

@@ -3,49 +3,117 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 
-class GetArticle extends StatelessWidget{
-  
-  final String documentId;
 
-  GetArticle(this.documentId);
-
-  @override
-  Widget build(BuildContext context){
-    CollectionReference articles = FirebaseFirestore.instance.collection('articles');
-    return FutureBuilder<DocumentSnapshot>(
-      future: articles.doc(documentId).get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-
-        if (snapshot.hasError) {
-          return Text("Something went wrong");
-        }
-
-        if (snapshot.hasData && !snapshot.data!.exists) {
-          return Text("Document does not exist");
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-          return Text("Name: ${data['name']} ${data['prix']}");
-        }
-
-        return Text("loading");
-      }
-    );
-   
-  }
-
-}
 
 class ArticleInformation extends StatefulWidget {
   @override
     _ArticleInformationState createState() => _ArticleInformationState();
 }
 
+class DocItem {
+  String prix;
+  String name;
+  String desc;
+  String img;
+
+  DocItem({required this.prix, required this.name, required this.desc, required this.img});
+
+  toJSONEncodable(){
+    Map<String, dynamic> m = new Map();
+
+    m['prix'] = prix;
+    m['name'] = name;
+    m['desc'] = desc;
+    m['img'] = img;
+    return m;
+  }
+
+}
+
+
+class DocList {
+  List<DocItem> items = [];
+
+  toJSONEncodable() {
+    return items.map((item) {
+      return item.toJSONEncodable();
+    }).toList();
+  }
+}
+
 class _ArticleInformationState extends State<ArticleInformation> {
   final Stream<QuerySnapshot> _articlesStream = FirebaseFirestore.instance.collection('articles').snapshots();
+  final LocalStorage storage = new LocalStorage('eco-app');
+  final DocList articles = new DocList();
+  final DocList articlesBasket = new DocList();
+
+  void getData() async{
+      setState(() {
+        var items = storage.getItem('favoris') ?? [];
+        var itemsBaskets = storage.getItem('basket') ?? [];
+        if (items != null) {
+          articles.items = List<DocItem>.from(
+            (items as List).map(
+              (item) => DocItem(
+                prix: item['prix'],
+                name: item['name'],
+                desc: item['desc'],
+                img: item['img'],
+              ),
+            ),
+          );
+        }if (itemsBaskets != null) {
+          articlesBasket.items = List<DocItem>.from(
+            (itemsBaskets as List).map(
+              (item) => DocItem(
+                prix: item['prix'],
+                name: item['name'],
+                desc: item['desc'],
+                img: item['img'],
+              ),
+            ),
+          );
+        }
+      });
+    }
+    
+    _addItem(DocumentSnapshot doc) {
+      
+      setState(() {
+        final item = new DocItem(prix: doc['prix'], name: doc['name'], desc: doc['desc'], img: doc['img']);
+        articles.items.add(item);
+        print('new favorites: ' + item.name);
+        _saveToStorage();
+      });
+    }
+    
+    _addItemBasket(DocumentSnapshot doc) {
+      
+      setState(() {
+        final item = new DocItem(prix: doc['prix'], name: doc['name'], desc: doc['desc'], img: doc['img']);
+        articlesBasket.items.add(item);
+        print('new in the basket: ' + item.name);
+        _saveToStorageBasket();
+      });
+    }
+
+    _saveToStorageBasket() {
+      storage.setItem('basket', articlesBasket.toJSONEncodable());
+    }
+
+    _saveToStorage() {
+      storage.setItem('favoris', articles.toJSONEncodable());
+    }
+
+    _clearStorage() async {
+      await storage.clear();
+
+      setState(() {
+        articles.items = storage.getItem('todos') ?? [];
+      });
+    }
 
   List<Widget> makeListWidget(AsyncSnapshot snapshot){
     return snapshot.data.docs.map<Widget>((doc){
@@ -85,8 +153,8 @@ class _ArticleInformationState extends State<ArticleInformation> {
             Container(
               child: Column(
                 children: [
-                  IconButton(onPressed: () => print("test"), icon: const Icon(Icons.shopping_basket)),
-                  IconButton(onPressed: () => print("test"), icon: const Icon(Icons.favorite), color: Colors.red),
+                  IconButton(onPressed: () => _addItemBasket(doc), icon: const Icon(Icons.shopping_basket_rounded)),
+                  IconButton(onPressed: () => _addItem(doc), icon: const Icon(Icons.favorite), color: Colors.red),
                 ]
               )
             )
@@ -98,6 +166,7 @@ class _ArticleInformationState extends State<ArticleInformation> {
 
   @override
   Widget build(BuildContext context) {
+    getData();
     return StreamBuilder<QuerySnapshot>(
       stream: _articlesStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
