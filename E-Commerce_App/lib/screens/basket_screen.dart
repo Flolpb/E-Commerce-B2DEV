@@ -39,16 +39,21 @@ class _BasketScreenState extends State<BasketScreen>{
     });
   }
 
-  
-    deleteData(doc){
-      articles.items.remove(doc);
-      _saveToStorage();
+  validBasket(){
+    if(_firebaseAuth.currentUser == null){
+      
     }
+  }
 
-  
-    _saveToStorage() {
-      storage.setItem('basket', articles.toJSONEncodable());
-    }
+  deleteData(doc){
+    articles.items.remove(doc);
+    _saveToStorage();
+  }
+
+
+  _saveToStorage() {
+    storage.setItem('basket', articles.toJSONEncodable());
+  }
 
   List<Widget> makeListWidget(articles){
     String desc;
@@ -105,6 +110,10 @@ class _BasketScreenState extends State<BasketScreen>{
       mainAxisAlignment: MainAxisAlignment.center,
       children: [Text("Prix total de votre panier: $prix €", style: TextStyle(fontSize: 18))]
     ));
+    widgets.add(ElevatedButton(
+      child: Text("Payer votre panier"),
+      onPressed: () => validBasket(),
+    ));
     return widgets;
   }
 
@@ -112,7 +121,7 @@ class _BasketScreenState extends State<BasketScreen>{
   Widget build(BuildContext context){
     getData();
     if(articles.items.length < 1){
-      return Text("Vous n'avez pas de favoris");
+      return Text("Vous n'avez pas de panier");
     }
     return new ListView(
       children: makeListWidget(articles),

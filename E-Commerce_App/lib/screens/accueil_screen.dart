@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:localstorage/localstorage.dart';
 
 
@@ -84,12 +85,12 @@ class _ArticleInformationState extends State<ArticleInformation> {
       setState(() {
         final item = new DocItem(prix: doc['prix'], name: doc['name'], desc: doc['desc'], img: doc['img']);
         articles.items.add(item);
-        print('new favorites: ' + item.name);
         _saveToStorage();
       });
+
     }
     
-    _addItemBasket(DocumentSnapshot doc) {
+    Future<bool> _addItemBasket(DocumentSnapshot doc, bool isLiked) async {
       
       setState(() {
         final item = new DocItem(prix: doc['prix'], name: doc['name'], desc: doc['desc'], img: doc['img']);
@@ -97,6 +98,7 @@ class _ArticleInformationState extends State<ArticleInformation> {
         print('new in the basket: ' + item.name);
         _saveToStorageBasket();
       });
+      return !isLiked;
     }
 
     _saveToStorageBasket() {
@@ -114,6 +116,13 @@ class _ArticleInformationState extends State<ArticleInformation> {
         articles.items = storage.getItem('todos') ?? [];
       });
     }
+
+    Future<bool> onLikeButtonTapped(bool isLiked, DocumentSnapshot doc) async{
+      _addItem(doc);
+      return !isLiked;
+    }
+
+
 
   List<Widget> makeListWidget(AsyncSnapshot snapshot){
     return snapshot.data.docs.map<Widget>((doc){
@@ -153,8 +162,26 @@ class _ArticleInformationState extends State<ArticleInformation> {
             Container(
               child: Column(
                 children: [
-                  IconButton(onPressed: () => _addItemBasket(doc), icon: const Icon(Icons.shopping_basket_rounded)),
-                  IconButton(onPressed: () => _addItem(doc), icon: const Icon(Icons.favorite), color: Colors.red),
+                  LikeButton(
+                    onTap: (isLiked) {return _addItemBasket(doc, isLiked);},
+                    likeBuilder: (bool isLiked) {
+                     return Icon(
+                        Icons.shopping_cart,
+                        color: isLiked ? Colors.red : Colors.black,
+                      );
+                    },
+                  ),
+                  LikeButton(
+                    onTap: (isLiked) {
+                      return onLikeButtonTapped(isLiked, doc);
+                    },
+                    likeBuilder: (bool isLiked) {
+                     return Icon(
+                        Icons.favorite,
+                        color: isLiked ? Colors.grey : Colors.red,
+                      );
+                    },
+                  ),
                 ]
               )
             )

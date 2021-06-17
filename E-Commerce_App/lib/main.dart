@@ -1,12 +1,12 @@
-import 'dart:developer';
 
+import 'package:animator/animator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:first_project/screens/account_navbar.dart';
 import 'package:first_project/screens/home_screen.dart';
 import 'package:first_project/services/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:page_transition/page_transition.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -18,7 +18,37 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomeScreen(),
+      title: 'Clean Code',
+        home: AnimatedSplashScreen(
+          duration: 3000,
+          splash: MyAnimation(),
+          nextScreen: HomeScreen(),
+          splashTransition: SplashTransition.fadeTransition,
+          backgroundColor: Colors.white
+        )
+    );
+  }
+}
+
+
+class MyAnimation extends StatelessWidget{
+  Widget build(BuildContext context){
+    return Animator<double>(
+        tween: Tween<double>(begin: 0, end: 100),
+        duration: Duration(seconds: 1),
+        cycles: 0,
+        builder: (context, animatorState, child) => Center(
+          child: Container(
+            child: Opacity(
+              opacity: animatorState.value / 100,
+              child: Column(children: [
+                Text("E-Commerce B2DEV", style: TextStyle(fontSize: 36)),
+                FlutterLogo(size: 35),
+              ]
+            ),
+          ),
+        ),
+      )
     );
   }
 }

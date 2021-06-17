@@ -1,4 +1,5 @@
 
+import 'package:animator/animator.dart';
 import 'package:first_project/main.dart';
 import 'package:first_project/screens/accueil_screen.dart';
 import 'package:first_project/screens/basket_screen.dart';
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: Row(children: [
             Text("E-Commerce B2DEV"),
+            AnimatedLogo(),
             Spacer(),
             IconButton(onPressed: () => print("test"), icon: const Icon(Icons.search)),
           ],
@@ -98,4 +100,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   }
 
+}
+
+class AnimatedLogo extends StatelessWidget{
+  Widget build(BuildContext context){
+    return Animator<double>(
+        tween: Tween<double>(begin: 0, end: 50),
+        duration: Duration(seconds: 4),
+        cycles: 0,
+        builder: (context, animatorState, child) => Center(
+          child: Container(
+            child: Opacity(
+              opacity: animatorState.value / 100,
+              child: FlutterLogo(),
+            ),
+          ),
+        ),
+      );
+  }
 }
