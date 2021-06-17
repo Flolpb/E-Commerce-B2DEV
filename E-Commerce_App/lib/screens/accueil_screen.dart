@@ -164,6 +164,12 @@ class _ArticleInformationState extends State<ArticleInformation> {
                 children: [
                   LikeButton(
                     onTap: (isLiked) {return _addItemBasket(doc, isLiked);},
+                    circleColor:
+                        CircleColor(start: Colors.black, end: Colors.white),
+                    bubblesColor: BubblesColor(
+                      dotPrimaryColor: Colors.black,
+                      dotSecondaryColor: Colors.white,
+                    ),
                     likeBuilder: (bool isLiked) {
                      return Icon(
                         Icons.shopping_cart,
