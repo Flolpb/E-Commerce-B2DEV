@@ -1,6 +1,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:first_project/screens/shop.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
@@ -136,17 +137,26 @@ class _ArticleInformationState extends State<ArticleInformation> {
       return Container(
         child: Row(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(doc['img']),
-                  fit: BoxFit.cover,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Shop(doc["img"], doc['name'], doc['desc'], doc['prix'])),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(doc['img']),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              height: 80,
-              width: 80,
+                height: 80,
+                width: 80,
               
+              ),
             ),
+            
             Spacer(),
             Container(
               child: Column(

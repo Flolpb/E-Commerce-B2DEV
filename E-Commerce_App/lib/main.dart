@@ -112,7 +112,9 @@ class _AuthenticateState extends State<Authenticate>{
         }
       })
     });
-    
+  }
+
+  void _decrementCounter() {
     setState(() {
       user = _firebaseAuth.currentUser;
       if(user != null){

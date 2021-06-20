@@ -6,46 +6,47 @@ import 'package:first_project/screens/basket_screen.dart';
 import 'package:first_project/screens/favorite_screen.dart';
 import 'package:flutter/material.dart';
 
-
-class HomeScreen extends StatefulWidget{
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _selectedIndex = 0;
+    });
+  }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
   }
 
-  void _onItemTapped(int index){
+  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-  
+
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   static List<Widget> _widgetOptions = <Widget>[
     ArticleInformation(),
     FavoriteScreen(),
-    Text(
-      'Index 2: Shop',
-      style: optionStyle,
-    ),
     BasketScreen(),
     Authenticate()
   ];
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Colors.white,
@@ -78,11 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Favoris',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shop),
-              label: 'Shop',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_basket),
+              icon: Icon(Icons.shopping_cart),
               label: 'Panier',
             ),
             BottomNavigationBarItem(
@@ -99,7 +96,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
   }
-
 }
 
 class AnimatedLogo extends StatelessWidget{

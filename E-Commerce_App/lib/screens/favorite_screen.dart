@@ -1,16 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_project/screens/accueil_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class FavoriteScreen extends StatefulWidget{
+class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({Key? key}) : super(key: key);
 
-  @override 
+  @override
   _FavoriteScreenState createState() => _FavoriteScreenState();
-
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen>{
@@ -134,7 +132,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
       return Text("Vous n'avez pas de favoris");
     }
     return new ListView(
-      children: makeListWidget(articles),
-    );
+      children: makeListWidget(articles)
+      );
   }
 }
